@@ -24,6 +24,8 @@
     be tuned and are not exposed here.
 '''
 
+import copy
+
 def get_setup(motion_type):
 
     setups = {}   
@@ -519,6 +521,57 @@ def get_setup(motion_type):
         'splineQds': True,
         'heel_vGRF_threshold': 5,
         'meshDensity': 50}
+
+
+    # ---------------------------------------------------------------
+    # STS hybrid GRF/COP tracking formulation.
+    # ---------------------------------------------------------------
+    setups['sts_grf'] = copy.deepcopy(setups['sit_to_stand'])
+    sts_grf = setups['sts_grf']
+
+    # Torque-driven hybrid model.
+    sts_grf['torque_driven_model'] = True
+    sts_grf['weights']['coordinateExcitationTerm'] = 10
+
+    # Do not inherit the original STS hip-rotation reserve actuators.
+    sts_grf['withReserveActuators'] = False
+    sts_grf.pop('reserveActuatorCoordinates', None)
+    sts_grf['weights'].pop('reserveActuatorTerm', None)
+
+    # Hybrid tracking weights from walking_grf.
+    sts_grf['weights']['positionTrackingTerm'] = 1000
+    sts_grf['weights']['velocityTrackingTerm'] = 100
+    sts_grf['weights']['accelerationTrackingTerm'] = 0.1
+    sts_grf['weights']['grfTrackingTerm'] = 0.001
+    sts_grf['weights']['copTrackingTerm'] = 300
+    sts_grf['weights']['copMonotonicTerm'] = 0.001
+    sts_grf['weights']['footTorqueTerm'] = 0
+    sts_grf['weights']['pelvisResidualsTerm'] = 0.001
+
+    # Track all three GRF components.
+    sts_grf['grfs_toTrack'] = {
+        'all': {'weight': 10}
+    }
+
+    # Emily-style soft pelvis residual formulation.
+    sts_grf['allowPelvisResiduals'] = True
+    sts_grf['pelvisResiduals_toTrack'] = {
+        'pelvis_tx': {'weight': 1},
+        'pelvis_ty': {'weight': 1},
+        'pelvis_tz': {'weight': 1},
+        'pelvis_tilt': {'weight': 100},
+        'pelvis_list': {'weight': 100},
+        'pelvis_rotation': {'weight': 100}
+    }
+
+    # GRF filtering.
+    sts_grf['filter_grfs_toTrack'] = True
+    sts_grf['cutoff_freq_grfs'] = 6
+
+    # Match Emily's hybrid setup.
+    sts_grf['enableLimitTorques'] = True
+
+
     
     setups['squats'] = {
         'ipopt_tolerance': 3,
