@@ -45,47 +45,29 @@ def getCOP_masks(storage_file, forceNames=None, threshold=10):
     """
     Returns binary masks indicating when vertical GRFs exceed a threshold
     for both right and left sides, based on a .mot file.
-
-    Parameters:
-    - storage_file: str, path to the .mot file
-    - forceNames: dict, optional mapping of GRF names
-        e.g., {'r': 'R_ground_force', 'l': 'L_ground_force', 'suffix': '_v'}
-    - threshold: float, force threshold (default is 10 N)
-
-    Returns:
-    - CoP_right_mask: numpy array of 0s and 1s
-    - CoP_left_mask: numpy array of 0s and 1s
     """
-
-    # Default naming convention for GRF columns
     if forceNames is None:
-        forceNames = {'r': 'R_ground_force', 'l': 'L_ground_force', 'suffix': '_v'}
+        forceNames = {
+            'r': 'R_ground_force',
+            'l': 'L_ground_force',
+            'suffix': '_v'
+        }
 
-    # === Parse headers from the .mot file ===
-    with open(storage_file, 'r') as file:
-        lines = file.readlines()
-        for line in lines:
-            if line.strip().startswith("time"):
-                headers = line.strip().split()
-                break
+    right_header = forceNames['r'] + forceNames['suffix'] + 'y'
+    left_header = forceNames['l'] + forceNames['suffix'] + 'y'
 
-    # Read the actual data using the headers
-    df = pd.read_csv(storage_file, delim_whitespace=True, skiprows=11, names=headers)
+    df = storage_to_dataframe(
+        storage_file,
+        headers=[right_header, left_header]
+    )
 
-    # Get vertical GRFs (y-direction)
-    grf_r_y = df[forceNames['r'] + forceNames['suffix'] + 'y'].values
-    grf_l_y = df[forceNames['l'] + forceNames['suffix'] + 'y'].values
+    grf_r_y = df[right_header].to_numpy()
+    grf_l_y = df[left_header].to_numpy()
 
-    # Create masks: 1 if force > threshold, else 0
     CoP_right_mask = (grf_r_y > threshold).astype(int)
     CoP_left_mask = (grf_l_y > threshold).astype(int)
 
     return CoP_right_mask, CoP_left_mask
-
-
-
-
-
 
 
 # %% Segment gait
