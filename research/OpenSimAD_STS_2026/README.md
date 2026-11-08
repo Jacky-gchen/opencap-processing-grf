@@ -6,6 +6,17 @@
 
 This directory documents a 72-case torque-driven sit-to-stand (STS) factorial sweep and a 16-case paired walking validation, run with OpenSimAD, CasADi/IPOPT, and HTCondor. The primary objective is a musculoskeletal simulation that both converges **and** tracks measured ground reaction forces (GRF), center of pressure (COP), and realistic human motion.
 
+
+## November 8, 2026 update — E056 selected for new STS trials
+
+**E056** is now the selected *provisional* baseline following the complete 72/72 force-and-COP screening and qualitative visualization against the laboratory MoCap IK reference. The original October analysis and historical convergence counts below remain unchanged. The selected configuration is **not** yet independently biomechanically validated, and inverse-dynamics residual checks are still pending.
+
+- [Exact E056 requested/effective configuration snapshot](configs/E056_selected_config.json)
+- [Selection evidence, comparisons, and tolerance findings](docs/E056_selection_2026-11-08.md)
+- [Checklist to adapt E056 safely to new STS data](docs/apply_E056_to_new_STS.md)
+
+The public repository intentionally **does not** include original participant recordings, force/motion time series, or full result archives. Those remain in institutional storage and must be backed up separately from CHTC.
+
 ## Main results
 
 | Batch | IPOPT optimal | Nonoptimal | HTCondor completed | Result archives |
