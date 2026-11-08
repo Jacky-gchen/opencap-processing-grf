@@ -1,68 +1,179 @@
-# OpenSimAD torque-driven STS: numerical study closeout
+# OpenSimAD GRF/COP Tracking for Sit-to-Stand
 
-**Analysis snapshot:** October 12, 2026
-**GitHub closeout prepared:** November 8, 2026
-**Status:** Numerical convergence sweep complete; **biomechanical validation not yet complete**.
+**Research record | October–November 2026**  
+**Current decision:** E056 is the selected **provisional** STS configuration for testing on new data.  
+**Validation status:** numerical screening and qualitative motion review completed; full biomechanical validation is **not yet complete**.
 
-This directory documents a 72-case torque-driven sit-to-stand (STS) factorial sweep and a 16-case paired walking validation, run with OpenSimAD, CasADi/IPOPT, and HTCondor. The primary objective is a musculoskeletal simulation that both converges **and** tracks measured ground reaction forces (GRF), center of pressure (COP), and realistic human motion.
+## What is this project?
 
+We want to simulate a person **rising from a chair** using OpenSimAD while reproducing the experimentally measured **ground reaction forces (GRF)** and **center of pressure (COP)**.
 
-## November 8, 2026 update — E056 selected for new STS trials
+Our question was not simply *"Can IPOPT finish the optimization?"* It was:
 
-**E056** is now the selected *provisional* baseline following the complete 72/72 force-and-COP screening and qualitative visualization against the laboratory MoCap IK reference. The original October analysis and historical convergence counts below remain unchanged. The selected configuration is **not** yet independently biomechanically validated, and inverse-dynamics residual checks are still pending.
+> **Which OpenSimAD configuration both converges numerically and gives convincing motion, force, and COP tracking during sit-to-stand?**
 
-- [Exact E056 requested/effective configuration snapshot](configs/E056_selected_config.json)
-- [Selection evidence, comparisons, and tolerance findings](docs/E056_selection_2026-11-08.md)
-- [Checklist to adapt E056 safely to new STS data](docs/apply_E056_to_new_STS.md)
-- [Why the inherited 5 N heel-force constraint and periodicity were disabled](docs/STS_formulation_decisions.md)
+We built on the GRF/COP-tracking approach developed by Emily Miller for walking, adapted it for STS, investigated solver sensitivity, and selected **E056** from 72 STS configurations for the next research stage.
 
-The public repository intentionally **does not** include original participant recordings, force/motion time series, or full result archives. Those remain in institutional storage and must be backed up separately from CHTC.
+**A few terms:** **STS** = sit-to-stand; **GRF** = force exchanged between the foot and ground; **COP** = effective point of application of the ground reaction force; **IK** = inverse kinematics used to estimate joint motion; **IPOPT** = the nonlinear optimizer used by OpenSimAD. *"IPOPT-optimal"* describes a solver termination status, **not** proof of accurate or physiologically realistic movement.
 
-## Main results
+## The investigation at a glance
 
-| Batch | IPOPT optimal | Nonoptimal | HTCondor completed | Result archives |
-|---|---:|---:|---:|---:|
-| STS E015–E086 | **50 / 72 (69.4%)** | 22 (15 iteration-limit, 7 step-error) | 72 / 72 | 72 / 72 |
-| Walking E111–E126 | **8 / 16 (50%)** | 8 (4 restoration, 3 step-error, 1 iteration-limit) | 16 / 16 | 16 / 16 |
+| Stage | What we investigated | Main finding |
+|---|---|---|
+| **1. Walking baseline** | Reproduce an Emily-style walking GRF/COP-tracking run (E009) | IPOPT reached optimal termination, but visual inspection identified an initial right-foot artifact |
+| **2. Walking COP-mask test** | Eight subjects, marker-derived versus force-derived COP masks (E111–E126; 16 runs) | **0/8** marker-mask cases versus **8/8** force-mask cases reached optimal IPOPT termination |
+| **3. STS formulation adaptation** | Inherited heel minimum-force and lower-limb periodicity constraints; GRF/COP tracking | Disable the 5 N heel minimum-force inequality and remove inherited periodicity for our nonperiodic STS setup |
+| **4. STS parameter sweep** | 72 configurations (E015–E086), changing five numerical choices | **50/72** reached optimal IPOPT termination; COP-objective settings and tolerance interacted strongly |
+| **5. Candidate selection** | Compare converged cases against measured GRF/COP and inspect simulated motion | **E056** selected as the provisional baseline for additional STS trials |
 
-### STS: COP objective and convergence
+This table is an overview of **separate investigations**, not a claim that the walking tests validated the STS results.
 
-| COP tracking + monotonic terms | IPOPT tolerance 1e-2 | IPOPT tolerance 1e-3 | Combined |
+## 1. Preliminary evaluation of the walking formulation
+
+We first tested an adapted implementation of Emily Miller's walking GRF/COP tracking approach using laboratory walking data.
+
+**E009: walking positive control.** It used marker-derived stance information to determine which COP frames should be tracked. IPOPT converged, but a visual inspection showed an unrealistic movement of the right foot near the start. This is why we distinguish numerical convergence from biomechanical plausibility.
+
+**E111–E126: paired COP-mask comparison.** We tested subjects 3–10 with two COP-validity-mask methods per subject:
+
+- **Marker-derived:** infer valid COP frames from marker-derived stance information.
+- **Force-derived:** use measured per-foot vertical GRF **greater than 20 N** to identify valid COP frames.
+
+Both variants still used **marker-derived gait-event timing and stance percentages**. Only the COP validity mask was switched.
+
+![Walking COP-mask convergence outcomes](figures/walking_cop_mask_convergence.png)
+
+| Walking COP mask | IPOPT-optimal | Nonoptimal |
+|---|---:|---:|
+| Marker-derived | **0/8** | 8 (4 restoration failures, 3 step errors, 1 iteration limit) |
+| Force-derived | **8/8** | 0 |
+
+**Interpretation:** the chosen COP mask was strongly associated with solver convergence in these walking tests. It is **not** evidence that all converged walking motions were biomechanically accurate or that we exactly reproduced Emily's published results.
+
+**Read next:** [Walking reproduction, paired experiment design, results, and limitations](docs/walking_preliminary_numerical_evaluation.md).
+
+## 2. Adapting the formulation for sit-to-stand
+
+OpenSimAD's original `sit_to_stand` settings were not used unchanged. In the adapted E008 STS runner, we made two important formulation decisions before the 72-case sweep:
+
+| Setting | Inherited STS behavior | Our STS behavior | Why |
+|---|---|---|---|
+| **Heel vertical GRF threshold** | A **5 N minimum** on selected *modeled heel contact-sphere forces* | Set `heel_vGRF_threshold = 0`, disabling that inequality | Permit heel unloading during forward weight transfer without imposing a heel-specific minimum |
+| **Lower-limb periodicity** | Force selected initial and final lower-limb coordinates to agree | Remove `periodicConstraints` | A full STS rise begins and ends in different postures |
+
+**Important distinction:** `heel_vGRF_threshold = 0` **does not force heel GRF to zero**. In the optimization source, the inequality is imposed only when the threshold is **greater than zero**. The heel contact model still generates forces according to its dynamics.
+
+We also used a **separate COP-validity mask** derived from **measured** vertical GRF with a **10 N** threshold in the STS runs. That 10 N criterion tells the objective *when to track measured COP*; it is **not** the modeled heel minimum-force constraint.
+
+These formulation adaptations were **held fixed in all 72 STS runs**. Our sweep therefore does **not** isolate whether removing the heel constraint or periodicity individually improved convergence.
+
+**Read next:** [STS formulation decisions and code evidence](docs/STS_formulation_decisions.md).
+
+## 3. The 72-case STS parameter investigation
+
+We used the subject 2 laboratory STS trial, OpenCap-derived kinematics and measured laboratory force/COP targets. Across experiments **E015–E086**, we varied five factors:
+
+| Factor | Tested values |
+|---|---|
+| **Kinematic tracking profile** | Emily-style: **1000 / 100 / 0.1**; STS-inspired: **50 / 10 / 50**; intermediate: **200 / 30 / 2** (position / velocity / acceleration weights) |
+| **Mesh density** | 25, 50, 100 |
+| **IPOPT tolerance** | `1e-2`, `1e-3` |
+| **COP objective** | ON or OFF (switching **both** `copTrackingTerm` and `copMonotonicTerm`) |
+| **Time window** | Original or buffered |
+
+The setup was **torque-driven**, with laboratory GRF inputs, allowed pelvis residuals, a measured-force-derived COP mask, **heel minimum = 0**, and **no inherited periodicity**.
+
+### Numerical convergence results
+
+**50/72 (69.4%)** STS cases reached optimal IPOPT termination. The remaining 22 terminated nonoptimally (15 iteration-limit, 7 step-computation errors). All 72 HTCondor jobs completed and transferred result archives; **HTCondor completion is not the same as IPOPT convergence**.
+
+![STS COP objective and tolerance convergence](figures/sts_cop_tolerance_convergence.png)
+
+| COP objective | Tolerance `1e-2` | Tolerance `1e-3` | Total |
 |---|---:|---:|---:|
-| ON | 14/18 | **0/18** | **14/36 (38.9%)** |
-| OFF | 18/18 | 18/18 | **36/36 (100%)** |
+| **ON** | **14/18** optimal | **0/18** optimal | 14/36 |
+| **OFF** | **18/18** optimal | **18/18** optimal | 36/36 |
 
-![STS convergence](figures/sts_cop_tolerance_convergence.png)
+**What this means:** disabling the combined COP objective made optimal solver termination more reliable in **this** experiment. But an easier-to-solve problem does not necessarily yield better COP tracking. And because the COP switch changes two objective terms together, these results cannot identify which individual term produced the effect.
 
-The COP switch in this sweep changes **two** objective terms simultaneously (`copTrackingTerm` and `copMonotonicTerm`). This design demonstrates sensitivity to their combined inclusion, not which individual term is responsible. Also, an optimal solution at a relaxed tolerance need not pass a stricter one.
+**Tolerance example:** E056 (`1e-2`, COP ON) reached optimal termination after **541 iterations**; otherwise matched E060 (`1e-3`, COP ON) continued to **8,144 iterations** and terminated nonoptimally. Their plotted primal/dual infeasibility histories overlap through iteration 541. These traces illustrate sensitivity to the stopping tolerance; they do not prove a particular underlying numerical failure mechanism.
 
-### Walking: COP-validity masks
+## 4. Why we selected E056
 
-All eight **force-derived** COP-mask cases were IPOPT-optimal; no **marker-derived** COP-mask case was optimal, comparing paired cases within each subject (3–10). Gait-event timing was marker-derived **in both cases**; only the COP mask differed. Force-derived masks used measured vertical GRF >20 N and are therefore laboratory validation inputs, **not** automatically available in video-only deployment.
+We compared force/COP predictions against laboratory measurements on a **common 0.47–1.47 s interval** (53 points) and visually compared selected motion trajectories with laboratory MoCap-derived IK. This is the **screening interval**, not the full E056 simulation window.
 
-![Walking convergence](figures/walking_cop_mask_convergence.png)
+E056 ranked first under our provisional combined screening criterion (GRF 60%, COP 30%, vertical free moment 10%). That weighting is a **research heuristic**, not an independently validated biomechanical standard.
 
-**The key limitation:** an IPOPT `Optimal Solution Found` message does not prove plausible motion, accurate GRF/COP, or acceptable pelvis residual forces. An earlier positive-control walking run (E009) converged but showed an unrealistic initial right-foot movement. Treat all results here as *solver-outcome* evidence until the separate biomechanical QA is completed.
+| E056 setting | Value |
+|---|---|
+| Tracking profile (position / velocity / acceleration) | **50 / 10 / 50** |
+| Mesh density | **100** |
+| IPOPT tolerance | **`1e-2`** |
+| Maximum iterations | **10,000** |
+| COP tracking / COP monotonic weights | **300 / 0.001** (ON) |
+| GRF tracking weight | **0.001** |
+| Heel minimum-force constraint | **Disabled (`heel_vGRF_threshold = 0`)** |
+| COP validity mask | **Measured-force-derived, 10 N** |
+| Periodicity | **Disabled** |
+| Original E056 buffered time window | **0.17–1.81 s** |
 
-## Files and traceability
+**Screening errors for E056** (common 0.47–1.47 s interval):
 
-- `data/sts_outcomes_transcribed_2026-10-12.csv`: all 72 IDs; IPOPT-optimal IDs and iteration/NLP values are transcribed from the terminal collector. For the 22 nonoptimal cases, the **per-ID failure category is not available in the pasted terminal output**. Obtain it from `sts_sweep_outcomes.csv` on CHTC before detailed failure attribution.
-- `data/sts_factorial_reconstructed_from_handoff.csv`: factor combinations **reconstructed from handoff loop order**; not a substitute for the original machine-readable manifest.
-- `data/walking_outcomes_transcribed_2026-10-12.csv`: exact per-ID walking `EXIT:` messages.
-- `data/sts_convergence_by_factor.csv`: descriptive rates computed from the reconstructed design and observed optimal IDs.
-- `docs/provenance.md`: job clusters, source hashes and data limitations.
-- `docs/validation_and_next_steps.md`: how to evaluate biomechanics and what remains unresolved.
-- `scripts/rebuild_summary.py`: checks data integrity, recomputes summary counts (Python standard library only).
-- `scripts/collect_source_on_chtc.sh`: optional **read-only** source snapshot from the CHTC repository, without study participant data or credentials.
+| Metric | Result |
+|---|---:|
+| Bilateral 3D GRF RMSE | **10.01 N** |
+| Bilateral 2D COP RMSE | **19.18 mm** |
+| Vertical free-moment RMSE | **2.51 N·m** |
 
-## Run the summary check
+The visual inspection of E056, E032, and E058 suggested all three were close to the reference IK motion; E058 had a small end-frame artifact. **These tracking-error metrics use measured targets that were also involved in optimization.** They are not independent validation or proof that E056 is the best choice for all participants.
+
+**Read next:** [E056 selection, paired comparisons, tolerance findings, and remaining limitations](docs/E056_selection_2026-11-08.md).
+
+## 5. What is complete—and what is not?
+
+| Evaluation | Current status |
+|---|---|
+| Experiment submission and solver-status audit | **Complete:** 72 STS and 16 paired walking jobs checked |
+| STS force/COP screening | **Complete for all 72** on the documented common interval |
+| E056 configuration selection and archival | **Complete:** provisional baseline selected |
+| Visual review of shortlisted STS motions | **Preliminary qualitative review completed** |
+| Full-window quantitative IK validation | **Not complete** |
+| Contact/foot-drift checks and pelvis residual assessment | **Not complete** |
+| Independent biomechanics and muscle-force validation | **Not complete** |
+| Demonstrated transfer of E056 to a new STS dataset | **Not yet established** |
+
+An *optimal* IPOPT exit is only one requirement. Before downstream inverse dynamics and muscle-force estimation, we still need credible joint motion, contact mechanics, residual loads, and time/coordinate alignment.
+
+## 6. Reusing E056 for a new STS trial
+
+Our next step is to use E056 as a **starting configuration**, not as a universally validated preset. Retain the numerical baseline initially, but regenerate each new trial's subject-specific model, kinematics, measured force inputs, COP mask, time window, and initial conditions.
+
+Start with the [new-trial adaptation and validation checklist](docs/apply_E056_to_new_STS.md). The [E056 JSON configuration](configs/E056_selected_config.json) stores requested and effective settings, but **is a reference snapshot, not an executable config loader by itself**. Confirm that the actual runner applies each setting.
+
+## Where to find the files
+
+| Location | Contents |
+|---|---|
+| [`docs/`](docs/) | Explanations, walking study, heel/periodicity decisions, E056 selection and validation checklist |
+| [`configs/E056_selected_config.json`](configs/E056_selected_config.json) | Selected E056 numerical configuration and source provenance |
+| [`data/`](data/) | Summary CSVs for the original October audit (including transcribed walking outcomes) |
+| [`scripts/`](scripts/) | 72-run GRF/COP screening, parameter-importance analysis, IPOPT tolerance diagnostics, and summary tools |
+| [`source/opensimad_source_snapshot/`](source/opensimad_source_snapshot/) | Preserved example runners, batch files, and original experiment manifests/outcome records |
+| [`figures/`](figures/) | Summary plots of STS convergence and walking COP-mask convergence |
+| [`docs/provenance.md`](docs/provenance.md) | CHTC job identifiers, archive/source records, and historical audit scope |
+
+**For the original October audit only**, run from this directory:
 
 ```bash
 python3 scripts/rebuild_summary.py
 ```
 
-## Reproducibility boundaries
+The historical `data/` summaries reflect an October 12 transcription and reconstructed design; the later screening and detailed source manifests are preserved separately. Do not confuse historical audit scope with later analysis completion. Source runner versions and CHTC result archives remain the authority for exact reproduction.
 
-The original full processing environment, trial input datasets, and force/motion output archives remain on UW–Madison CHTC or the researcher's approved workspace. This branch also preserves selected runner scripts, a source snapshot, experiment manifests and analysis scripts, but is **not** a complete standalone simulation environment with participant inputs or verified dependencies. Do **not** upload `.env`, raw subject datasets, identifiable videos, internal credentials, bulk result archives, or licensed journal PDFs to a public repository. Confirm redistribution permission for any third-party source borrowed from upstream codebases.
+## Reproducibility and data boundaries
 
-No new jobs were submitted as part of this closeout. Proposed E010–E014 and E087–E110 are **not registered as submitted**.
+This is a **research record**, not a self-contained package that can reproduce every simulation without the corresponding inputs, OpenSimAD environment, and dependencies. The original trial data and full result archives are **not** committed here; they remain in institutional storage or the research workspace and need an approved backup independent of CHTC.
+
+The repository is public. **Do not commit** raw participant videos/markers/force recordings, identifiable subject files, full research archives, credentials or `.env` files, or licensed papers. Preserve redistribution permissions for third-party source code.
+
+**Historical note:** proposed E010–E014 and E087–E110 were not submitted in the documented closeout.
