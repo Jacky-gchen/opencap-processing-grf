@@ -11,6 +11,12 @@
 - Allow pelvis residuals; disable periodic constraints; minimum heel vertical GRF 0.
 - Source code should be pinned to the archived E056 runner checksum and compared with the branch's source snapshot. No claim that passing JSON directly to the runtime will configure these settings: the runner's wiring must be verified.
 
+## Heel-force constraint and COP mask: different decisions
+
+The `heel_vGRF_threshold = 0` setting **disables** OpenSimAD's inherited hard minimum of 5 N on selected heel contact spheres. This avoids forcing heel loading at all times but does not force heel force to zero or guarantee stable foot contact. Keep it as an initial E056 baseline, and inspect actual heel/forefoot contact-force distribution for each new trial; consider a controlled 0-versus-5 N test if heel behavior is problematic.
+
+By contrast, the **10 N measured vertical-force threshold** is used by `getCOP_masks` to choose when to include *measured COP* in the tracking objective. Recompute that mask for each new trial. [Implementation evidence and limits](STS_formulation_decisions.md).
+
 ## Do NOT copy from subject 2
 
 1. **Participant-specific model:** generate and verify scaling, contact sphere positions, masses/inertias, geometry and coordinate definitions for the new participant.
