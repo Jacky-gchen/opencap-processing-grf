@@ -1,0 +1,17 @@
+ID,Cluster,Subject,COP_mask_method,IPOPT_Final_Status,IPOPT_Optimal,Source
+E111,12111630,3,marker-derived,Error in step computation!,False,2026-10-12 terminal EXIT log
+E112,12111630,3,force-derived,Optimal Solution Found.,True,2026-10-12 terminal EXIT log
+E113,12111630,4,marker-derived,Restoration Failed!,False,2026-10-12 terminal EXIT log
+E114,12111630,4,force-derived,Optimal Solution Found.,True,2026-10-12 terminal EXIT log
+E115,12111630,5,marker-derived,Restoration Failed!,False,2026-10-12 terminal EXIT log
+E116,12111630,5,force-derived,Optimal Solution Found.,True,2026-10-12 terminal EXIT log
+E117,12111630,6,marker-derived,Maximum Number of Iterations Exceeded.,False,2026-10-12 terminal EXIT log
+E118,12111630,6,force-derived,Optimal Solution Found.,True,2026-10-12 terminal EXIT log
+E119,12111630,7,marker-derived,Error in step computation!,False,2026-10-12 terminal EXIT log
+E120,12111630,7,force-derived,Optimal Solution Found.,True,2026-10-12 terminal EXIT log
+E121,12111630,8,marker-derived,Error in step computation!,False,2026-10-12 terminal EXIT log
+E122,12111630,8,force-derived,Optimal Solution Found.,True,2026-10-12 terminal EXIT log
+E123,12111630,9,marker-derived,Restoration Failed!,False,2026-10-12 terminal EXIT log
+E124,12111630,9,force-derived,Optimal Solution Found.,True,2026-10-12 terminal EXIT log
+E125,12111630,10,marker-derived,Restoration Failed!,False,2026-10-12 terminal EXIT log
+E126,12111630,10,force-derived,Optimal Solution Found.,True,2026-10-12 terminal EXIT log

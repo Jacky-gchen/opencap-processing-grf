@@ -1,0 +1,21 @@
+container_image = osdf:///chtc/staging/g/gchen293/opencap.sif
+
+executable = run_sts_sweep.sh
+arguments = $(Experiment)
+
+log    = logs/$(Experiment)_$(Cluster).log
+output = logs/$(Experiment)_$(Cluster).out
+error  = logs/$(Experiment)_$(Cluster).err
+
+should_transfer_files = YES
+when_to_transfer_output = ON_EXIT
+
+transfer_input_files = sts_sweep_v1_bundle.tar.gz, .env
+transfer_output_files = $(Experiment)_results.tar.gz
+transfer_output_remaps = "$(Experiment)_results.tar.gz=results/$(Experiment)_results.tar.gz"
+
+request_cpus = 4
+request_memory = 16GB
+request_disk = 12GB
+
+queue Experiment from remaining_ids.txt

@@ -1,0 +1,73 @@
+ID,Cluster,ProcId,IPOPT_Optimal,IPOPT_Final_Status,Iterations,Scaled_NLP_Error,ArchivePresent,DataSource
+E015,12111603,0,True,Optimal Solution Found,653,0.005326553131253516,True,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E016,12111608,,True,Optimal Solution Found,519,0.007813496425966278,True,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E017,12111608,,True,Optimal Solution Found,317,6.858335080012295e-05,True,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E018,12111603,1,True,Optimal Solution Found,173,0.003625283124077939,True,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E019,12111608,,False,Non-optimal: individual failure type not reconstructed,,,,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E020,12111608,,False,Non-optimal: individual failure type not reconstructed,,,,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E021,12111608,,True,Optimal Solution Found,317,6.858335080012295e-05,True,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E022,12111608,,True,Optimal Solution Found,247,0.0005063466189802465,True,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E023,12111608,,True,Optimal Solution Found,552,0.006582575719407957,True,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E024,12111608,,False,Non-optimal: individual failure type not reconstructed,,,,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E025,12111608,,True,Optimal Solution Found,176,0.008034221895146468,True,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E026,12111608,,True,Optimal Solution Found,253,0.0016246903061274945,True,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E027,12111608,,False,Non-optimal: individual failure type not reconstructed,,,,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E028,12111608,,False,Non-optimal: individual failure type not reconstructed,,,,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E029,12111608,,True,Optimal Solution Found,248,0.000100674928649357,True,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E030,12111608,,True,Optimal Solution Found,459,0.00012219682529295735,True,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E031,12111608,,True,Optimal Solution Found,340,0.004460977518746874,True,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E032,12111608,,True,Optimal Solution Found,319,0.008791352047397656,True,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E033,12111608,,True,Optimal Solution Found,519,0.00038404286194281396,True,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E034,12111608,,True,Optimal Solution Found,218,0.0011364703264639558,True,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E035,12111608,,False,Non-optimal: individual failure type not reconstructed,,,,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E036,12111608,,False,Non-optimal: individual failure type not reconstructed,,,,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E037,12111608,,True,Optimal Solution Found,519,0.00038404286194281396,True,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E038,12111608,,True,Optimal Solution Found,456,0.0008244366872721866,True,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E039,12111608,,True,Optimal Solution Found,607,0.00783871052647183,True,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E040,12111608,,False,Non-optimal: individual failure type not reconstructed,,,,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E041,12111608,,True,Optimal Solution Found,603,0.005009959627171324,True,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E042,12111608,,True,Optimal Solution Found,251,0.006755922355688903,True,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E043,12111608,,False,Non-optimal: individual failure type not reconstructed,,,,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E044,12111608,,False,Non-optimal: individual failure type not reconstructed,,,,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E045,12111608,,True,Optimal Solution Found,727,0.0007948628634374806,True,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E046,12111608,,True,Optimal Solution Found,563,0.0008557395288547562,True,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E047,12111608,,True,Optimal Solution Found,418,0.006084018681489079,True,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E048,12111608,,True,Optimal Solution Found,343,0.009538096006471755,True,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E049,12111608,,True,Optimal Solution Found,301,0.008937719108083938,True,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E050,12111608,,True,Optimal Solution Found,327,0.002371172836253858,True,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E051,12111608,,False,Non-optimal: individual failure type not reconstructed,,,,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E052,12111608,,False,Non-optimal: individual failure type not reconstructed,,,,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E053,12111608,,True,Optimal Solution Found,433,0.000897472483497916,True,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E054,12111608,,True,Optimal Solution Found,426,0.0009004163311341107,True,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E055,12111608,,True,Optimal Solution Found,435,0.008319185331268275,True,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E056,12111608,,True,Optimal Solution Found,541,0.008291400516750008,True,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E057,12111608,,True,Optimal Solution Found,479,0.003572851308462591,True,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E058,12111608,,True,Optimal Solution Found,309,0.00715592781829559,True,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E059,12111608,,False,Non-optimal: individual failure type not reconstructed,,,,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E060,12111608,,False,Non-optimal: individual failure type not reconstructed,,,,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E061,12111608,,True,Optimal Solution Found,551,0.0003563283673173432,True,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E062,12111608,,True,Optimal Solution Found,578,0.0004096643168299702,True,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E063,12111608,,True,Optimal Solution Found,315,0.007560919200938457,True,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E064,12111608,,False,Non-optimal: individual failure type not reconstructed,,,,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E065,12111608,,True,Optimal Solution Found,337,0.002157755672411777,True,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E066,12111608,,True,Optimal Solution Found,452,0.004702995957484615,True,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E067,12111608,,False,Non-optimal: individual failure type not reconstructed,,,,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E068,12111608,,False,Non-optimal: individual failure type not reconstructed,,,,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E069,12111608,,True,Optimal Solution Found,513,0.0007546347750860356,True,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E070,12111608,,True,Optimal Solution Found,478,0.00012037530661413413,True,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E071,12111608,,True,Optimal Solution Found,285,0.009414544296303708,True,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E072,12111608,,False,Non-optimal: individual failure type not reconstructed,,,,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E073,12111608,,True,Optimal Solution Found,363,0.0037286677588841055,True,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E074,12111608,,True,Optimal Solution Found,356,0.0029983959147400516,True,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E075,12111608,,False,Non-optimal: individual failure type not reconstructed,,,,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E076,12111608,,False,Non-optimal: individual failure type not reconstructed,,,,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E077,12111608,,True,Optimal Solution Found,457,0.0009375010061022041,True,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E078,12111608,,True,Optimal Solution Found,378,0.0007757824730937183,True,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E079,12111608,,True,Optimal Solution Found,547,0.009490388570061615,True,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E080,12111608,,True,Optimal Solution Found,327,0.004329958495172314,True,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E081,12111608,,True,Optimal Solution Found,580,0.004928943749736283,True,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E082,12111608,,True,Optimal Solution Found,290,0.0011454043860931501,True,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E083,12111608,,False,Non-optimal: individual failure type not reconstructed,,,,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E084,12111608,,False,Non-optimal: individual failure type not reconstructed,,,,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E085,12111608,,True,Optimal Solution Found,589,0.00042077199953603485,True,2026-10-12 terminal collector output; failed cases require actual outcomes.csv
+E086,12111608,,True,Optimal Solution Found,485,0.0006740599396998947,True,2026-10-12 terminal collector output; failed cases require actual outcomes.csv

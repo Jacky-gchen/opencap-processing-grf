@@ -1,0 +1,13 @@
+Factor,Level,Optimal,Total,Percent
+Tracking profile,emily,17,24,70.8
+Tracking profile,sts_inspired,17,24,70.8
+Tracking profile,intermediate,16,24,66.7
+Mesh density,25,16,24,66.7
+Mesh density,50,16,24,66.7
+Mesh density,100,18,24,75.0
+IPOPT tolerance,0.01,32,36,88.9
+IPOPT tolerance,0.001,18,36,50.0
+COP objective,True,14,36,38.9
+COP objective,False,36,36,100.0
+Time window,original,27,36,75.0
+Time window,buffered,23,36,63.9

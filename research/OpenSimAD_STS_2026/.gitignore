@@ -1,0 +1,15 @@
+# Never commit local input data, outputs, or credentials from this closeout
+.env
+.env.*
+*.pem
+*.key
+**/Data/
+**/ForceData/
+**/VideoData/
+**/MarkerData/
+**/logs/
+**/results/
+*.sif
+*.tar.gz
+*.zip
+__pycache__/
