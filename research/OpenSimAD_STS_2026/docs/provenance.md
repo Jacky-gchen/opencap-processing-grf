@@ -34,6 +34,10 @@ The October 12 terminal collector recorded **50 STS IPOPT optimal**, **15 iterat
 - GRF tracking 0.001, pelvis residual weight 0.001, coordinate excitation weight 10. COP-ON tracking/monotonic weights 300/0.001; COP-OFF both zero.
 - Original and buffered STS windows; buffered is 0.17–1.81 s. Original bounds are algorithmically segmented; do not treat nominal 0.47–1.51 s as verified for every archive.
 
+### Pre-sweep constraint adaptations
+
+The original `sit_to_stand` preset has `heel_vGRF_threshold=5` N and lower-limb periodicity. The E008 adaptation and all E015–E086 simulations overrode the heel threshold to **0 N** and removed `periodicConstraints`. This was a *fixed* formulation choice, distinct from the measured-force COP mask threshold of **10 N**. The 72-case factorial design did not independently vary the heel constraint or periodicity; see [the formulation decision note](STS_formulation_decisions.md).
+
 ## Why the manifest in this folder is marked reconstructed
 
 The October 10 handoff supplied the full loop order and first eight IDs. We reconstructed ID→factor mapping to calculate descriptive rates. **For definitive provenance**, replace this file with the real CHTC JSON/CSV manifest and verify matching configurations. The per-ID IPOPT success list is an independent transcription from the October 12 collector output.
