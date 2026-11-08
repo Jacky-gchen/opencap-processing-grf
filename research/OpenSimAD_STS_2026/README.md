@@ -14,6 +14,7 @@ This directory documents a 72-case torque-driven sit-to-stand (STS) factorial sw
 - [Exact E056 requested/effective configuration snapshot](configs/E056_selected_config.json)
 - [Selection evidence, comparisons, and tolerance findings](docs/E056_selection_2026-11-08.md)
 - [Checklist to adapt E056 safely to new STS data](docs/apply_E056_to_new_STS.md)
+- [Why the inherited 5 N heel-force constraint and periodicity were disabled](docs/STS_formulation_decisions.md)
 
 The public repository intentionally **does not** include original participant recordings, force/motion time series, or full result archives. Those remain in institutional storage and must be backed up separately from CHTC.
 
@@ -62,6 +63,6 @@ python3 scripts/rebuild_summary.py
 
 ## Reproducibility boundaries
 
-The *actual* runnable code, trial input datasets, original manifests, and force/motion output archives are on the UW–Madison CHTC system or the researcher's Windows workspace. This GitHub-ready closeout contains a transparent, source-based **summary**, not a complete standalone simulation environment. Do **not** upload `.env`, raw subject datasets, identifiable videos, internal credentials, bulk result archives, or licensed journal PDFs to a public repository. Confirm redistribution permission for any third-party source borrowed from upstream codebases.
+The original full processing environment, trial input datasets, and force/motion output archives remain on UW–Madison CHTC or the researcher's approved workspace. This branch also preserves selected runner scripts, a source snapshot, experiment manifests and analysis scripts, but is **not** a complete standalone simulation environment with participant inputs or verified dependencies. Do **not** upload `.env`, raw subject datasets, identifiable videos, internal credentials, bulk result archives, or licensed journal PDFs to a public repository. Confirm redistribution permission for any third-party source borrowed from upstream codebases.
 
 No new jobs were submitted as part of this closeout. Proposed E010–E014 and E087–E110 are **not registered as submitted**.
