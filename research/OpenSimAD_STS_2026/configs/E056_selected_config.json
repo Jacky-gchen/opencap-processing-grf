@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "selected_on": "2026-11-08",
+  "selected_experiment": "E056",
+  "selection_status": "selected_for_next_stage; not independently biomechanically validated",
+  "provenance": {
+    "original_manifest": "~/sts_sweep_v1/sts_sweep_manifest.json",
+    "original_results_archive": "~/sts_sweep_v1/results/E056_results.tar.gz",
+    "metadata_inside_archive": "subject2_lab_STS_test/ExperimentMetadata/E056.json",
+    "runner_sha256": "38fb2769e611aeff3a401ea424e6c00dad4c14775253a5669a69848a10830b60"
+  },
+  "source_trial": {
+    "Session": "subject2_lab_STS_test",
+    "Trial": "STS1",
+    "motion_type": "sts_grf",
+    "input_force_file": "STS1_forces.mot",
+    "source_time_window_s": [
+      0.17,
+      1.81
+    ]
+  },
+  "sweep_configuration": {
+    "profile": "sts_inspired",
+    "meshDensity": 100,
+    "ipopt_tolerance": 2,
+    "ipopt_tolerance_value": 0.01,
+    "maxIter": 10000,
+    "window": "buffered",
+    "periodicity": false,
+    "heel_vGRF_threshold": 0,
+    "torque_driven_model": true,
+    "COP_objective_enabled": true
+  },
+  "effective_solver_settings": {
+    "meshDensity": 100,
+    "ipopt_tolerance": 2,
+    "maxIter": 10000,
+    "torque_driven_model": true,
+    "allowPelvisResiduals": true,
+    "heel_vGRF_threshold": 0,
+    "periodicConstraints": null,
+    "coordinate_constraints": {
+      "pelvis_ty": {
+        "env_bound": 0.1
+      },
+      "pelvis_tx": {
+        "env_bound": 0.1
+      }
+    }
+  },
+  "effective_weights": {
+    "positionTrackingTerm": 50,
+    "velocityTrackingTerm": 10,
+    "accelerationTrackingTerm": 50,
+    "activationTerm": 100,
+    "armExcitationTerm": 0.001,
+    "lumbarExcitationTerm": 0.001,
+    "jointAccelerationTerm": 0.001,
+    "activationDtTerm": 0.001,
+    "forceDtTerm": 0.001,
+    "coordinateExcitationTerm": 10,
+    "grfTrackingTerm": 0.001,
+    "copTrackingTerm": 300,
+    "copMonotonicTerm": 0.001,
+    "footTorqueTerm": 0,
+    "pelvisResidualsTerm": 0.001
+  },
+  "cop_mask": {
+    "method": "force-derived",
+    "approximate_measured_vertical_force_threshold_N": 10,
+    "note": "Verify implementation in the pinned runner and reconstruct the mask from NEW trial measured force; do not reuse subject2 mask."
+  },
+  "screening": {
+    "compare_interval_s": [
+      0.47,
+      1.47
+    ],
+    "compare_samples": 53,
+    "bilateral_3D_GRF_RMSE_N": 10.01,
+    "bilateral_COP_2D_RMSE_mm": 19.18,
+    "vertical_free_moment_RMSE_Nm": 2.51,
+    "metric_caveat": "Against the same force/COP tracking targets used by optimization; not independent validation."
+  },
+  "usage_note": "Configuration snapshot only, not a runnable command. For a new trial, replace trial inputs, time window, geometry, and force-derived COP mask; verify effective settings in fresh output metadata. The numeric ipopt_tolerance=2 is a runner-specific encoding, with physical requested target 0.01."
+}
